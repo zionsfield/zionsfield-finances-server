@@ -7,6 +7,10 @@ const studentRouter = express.Router();
 studentRouter.post("/add", Auth.isAdmin, StudentController.addStudent);
 
 studentRouter
+  .route("/delete")
+  .delete(Auth.isSuperAdmin, StudentController.deleteStudent);
+
+studentRouter
   .route("/class")
   .get(Auth.isAdmin, StudentController.getStudentsByClassName)
   .put(Auth.isSuperAdmin, StudentController.updateStudentClass);
