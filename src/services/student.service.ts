@@ -1,4 +1,4 @@
-import { CreateStudent } from "../typings";
+import { CreateStudent, EditStudent } from "../typings";
 import StudentRepo from "../repo/student.repo";
 import ClassRepo from "../repo/class.repo";
 
@@ -17,6 +17,22 @@ class StudentService {
         msg: "Student added successfully",
         status: 201,
         student: createdStudent,
+      };
+    } catch (err) {
+      console.log(err);
+      return { msg: "An error occurred", status: 500 };
+    }
+  }
+
+  static async editStudent(studentId: string, updatedStudent: EditStudent) {
+    try {
+      return {
+        msg: "Student updated",
+        status: 200,
+        updatedStudent: await StudentRepo.editStudent(
+          studentId,
+          updatedStudent
+        ),
       };
     } catch (err) {
       console.log(err);

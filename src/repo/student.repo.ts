@@ -1,10 +1,18 @@
-import { CreateStudent, CreateStudentDto } from "../typings";
+import { CreateStudent, CreateStudentDto, EditStudent } from "../typings";
 import ClassRepo from "./class.repo";
 import StudentModel from "../models/student.model";
 
 class StudentRepo {
   static async addStudent(newStudent: CreateStudentDto) {
     return await StudentModel.create(newStudent);
+  }
+  static async editStudent(studentId: string, updatedStudent: EditStudent) {
+    return await StudentModel.updateOne(
+      { _id: studentId },
+      {
+        $set: updatedStudent,
+      }
+    );
   }
   static async changeClass(
     oldClassId: string,

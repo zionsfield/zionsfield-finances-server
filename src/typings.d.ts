@@ -33,6 +33,10 @@ export interface StudentBase {
   tuition: number;
 }
 
+export interface EditStudent extends StudentBase {
+  amountPaid: number;
+}
+
 export interface CreateStudent extends StudentBase {
   className: string;
 }

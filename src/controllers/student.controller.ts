@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import StudentService from "../services/student.service";
-import { CreateStudent } from "../typings";
+import { CreateStudent, EditStudent } from "../typings";
 
 class StudentController {
   static async addStudent(
@@ -14,6 +14,21 @@ class StudentController {
       );
       if (status !== 201) return res.status(status).json({ msg, status });
       return res.status(status).json({ msg, status, student });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "An error occurred", status: 500 });
+    }
+  }
+
+  static async editStudent(
+    req: Request<{}, {}, EditStudent, { studentId: string }>,
+    res: Response
+  ) {
+    try {
+      const { msg, status: updatedStudent } = await StudentService.editStudent(
+        req.query.studentId,
+        req.body
+      );
     } catch (err) {
       console.log(err);
       return res.status(500).json({ msg: "An error occurred", status: 500 });

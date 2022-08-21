@@ -11,6 +11,10 @@ studentRouter
   .delete(Auth.isSuperAdmin, StudentController.deleteStudent);
 
 studentRouter
+  .route("/edit")
+  .put(Auth.isSuperAdmin, StudentController.editStudent);
+
+studentRouter
   .route("/class")
   .get(Auth.isAdmin, StudentController.getStudentsByClassName)
   .put(Auth.isSuperAdmin, StudentController.updateStudentClass);
