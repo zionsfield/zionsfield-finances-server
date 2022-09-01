@@ -24,6 +24,22 @@ class ExpenseController {
     }
   }
 
+  static async deleteExpense(
+    req: Request<{}, {}, {}, { _id: string }>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { msg, status, expense } = await ExpenseService.deleteExpense(
+        req.query._id
+      );
+      return res.status(status).json({ msg, status, expense });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "An error occurred", status: 500 });
+    }
+  }
+
   static async getExpensesByDay(
     req: Request<{}, {}, {}, { day: string }>,
     res: Response,

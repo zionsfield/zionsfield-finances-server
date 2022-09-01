@@ -12,6 +12,12 @@ paymentRouter.get(
   PaymentController.getPaymentsByDay
 );
 
+paymentRouter.delete(
+  "/delete",
+  Auth.isSuperAdmin,
+  PaymentController.deletePayment
+);
+
 paymentRouter.get("/all", Auth.isSuperAdmin, PaymentController.getPayments);
 
 export default paymentRouter;

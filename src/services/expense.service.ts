@@ -21,6 +21,20 @@ class ExpenseService {
     }
   }
 
+  static async deleteExpense(_id: string) {
+    try {
+      const deletedExpense = await ExpenseRepo.deleteExpense(_id);
+      return {
+        msg: "Expense deleted successfully",
+        status: 200,
+        expense: deletedExpense,
+      };
+    } catch (err) {
+      console.log(err);
+      return { msg: "An error occurred", status: 500 };
+    }
+  }
+
   static async getExpenseByDay(day: string) {
     const date = new Date(day);
     try {

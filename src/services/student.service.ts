@@ -26,13 +26,12 @@ class StudentService {
 
   static async editStudent(studentId: string, updatedStudent: EditStudent) {
     try {
+      const updated = await StudentRepo.editStudent(studentId, updatedStudent);
+
       return {
         msg: "Student updated",
         status: 200,
-        updatedStudent: await StudentRepo.editStudent(
-          studentId,
-          updatedStudent
-        ),
+        updatedStudent: updated,
       };
     } catch (err) {
       console.log(err);

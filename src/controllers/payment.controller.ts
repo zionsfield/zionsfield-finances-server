@@ -24,6 +24,21 @@ class PaymentController {
     }
   }
 
+  static async deletePayment(
+    req: Request<{}, {}, {}, { _id: string }>,
+    res: Response
+  ) {
+    try {
+      const { msg, status, payment } = await PaymentService.deletePayment(
+        req.query._id
+      );
+      return res.status(status).json({ msg, status, payment });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "An error occurred", status: 500 });
+    }
+  }
+
   static async getPaymentsByDay(
     req: Request<{}, {}, {}, { day: string }>,
     res: Response,

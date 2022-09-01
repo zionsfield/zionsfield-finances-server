@@ -12,6 +12,10 @@ class ExpenseRepo {
     return await ExpenseModel.create({ ...newExpense, currentTerm });
   }
 
+  static async deleteExpense(_id: string) {
+    return await ExpenseModel.deleteOne({ _id });
+  }
+
   static async getTotalExpensesPerTerm(currentTerm: Term) {
     const expenses = await ExpenseModel.find({ currentTerm });
     console.log(expenses);
@@ -29,7 +33,7 @@ class ExpenseRepo {
       { currentTerm },
       {},
       { limit: pagination.limit, skip: pagination.page * pagination.limit }
-    ).sort({ date: -1 });
+    ).sort({ createdAt: 1 });
   }
 
   static async getExpensesByDay(day: number) {

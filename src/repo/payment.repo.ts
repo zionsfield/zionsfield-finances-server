@@ -11,6 +11,9 @@ class PaymentRepo {
   }) {
     return await PaymentModel.create({ ...newPayment, currentTerm });
   }
+  static async deletePayment(_id: string) {
+    return await PaymentModel.deleteOne({ _id });
+  }
   static async getTotalPaymentsPerTerm(currentTerm: Term) {
     const payments = await PaymentModel.find({ currentTerm });
     console.log(payments);
@@ -29,7 +32,7 @@ class PaymentRepo {
       { limit: pagination.limit, skip: pagination.page * pagination.limit }
     )
       .populate("studentId")
-      .sort({ "studentId.name": "asc", date: -1 })
+      .sort({ createdAt: 1 })
       .exec();
   }
 

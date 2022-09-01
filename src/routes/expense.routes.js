@@ -12,6 +12,12 @@ expenseRouter.get(
   ExpenseController.getExpensesByDay
 );
 
+expenseRouter.delete(
+  "/delete",
+  Auth.isSuperAdmin,
+  ExpenseController.deleteExpense
+);
+
 expenseRouter.get("/all", Auth.isSuperAdmin, ExpenseController.getExpenses);
 
 export default expenseRouter;

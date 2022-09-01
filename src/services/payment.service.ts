@@ -36,6 +36,20 @@ class PaymentService {
     }
   }
 
+  static async deletePayment(_id: string) {
+    try {
+      const deletedPayment = await PaymentRepo.deletePayment(_id);
+      return {
+        msg: "Payment deleted successfully",
+        status: 200,
+        payment: deletedPayment,
+      };
+    } catch (err) {
+      console.log(err);
+      return { msg: "An error occurred", status: 500 };
+    }
+  }
+
   static async getPaymentsByDay(day: string) {
     const date = new Date(day);
     try {
