@@ -60,8 +60,17 @@ export interface AddPaymentDto extends PaymentBase {
   classId: string;
 }
 
+export interface EditPayment {
+  amountPaid: number;
+}
+
 export interface AddExpense {
   details: string;
   amountPaid: number;
   currentTerm: Term;
+}
+
+export interface EditExpense {
+  details: string;
+  amountPaid: number;
 }

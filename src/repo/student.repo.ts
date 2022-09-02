@@ -37,7 +37,7 @@ class StudentRepo {
   static async findByName(name: string) {
     return await StudentModel.findOne({ name });
   }
-  static async findById(_id: string) {
+  static async findById(_id: any) {
     return await StudentModel.findById(_id);
   }
   static async deleteById(_id: string) {

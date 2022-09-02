@@ -1,6 +1,6 @@
 import ExpenseModel from "../models/expense.model";
 import ExpenseRepo from "../repo/expense.repo";
-import { AddExpense, Pagination, Term } from "../typings";
+import { AddExpense, EditExpense, Pagination, Term } from "../typings";
 
 class ExpenseService {
   static async addExpense(newExpense: AddExpense, currentTerm: Term) {
@@ -14,6 +14,20 @@ class ExpenseService {
         msg: "Expense created successfully",
         status: 201,
         expense: createdExpense,
+      };
+    } catch (err) {
+      console.log(err);
+      return { msg: "An error occurred", status: 500 };
+    }
+  }
+
+  static async editExpense(_id: string, editedE: EditExpense) {
+    try {
+      const updatedExpense = await ExpenseRepo.editExpense(_id, editedE);
+      return {
+        msg: "Expense updated successfully",
+        status: 200,
+        expense: updatedExpense,
       };
     } catch (err) {
       console.log(err);

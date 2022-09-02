@@ -72,11 +72,7 @@ class StudentService {
   static async getStudentsByClassName(className: string, details?: string) {
     try {
       const classObj = await ClassRepo.findByName(className);
-      console.log(className);
-
       if (!classObj) return { msg: "Class not found", status: 404 };
-      console.log(classObj._id.toString());
-
       let foundStudents;
       if (details) {
         foundStudents = await StudentRepo.findByClass(classObj._id.toString());

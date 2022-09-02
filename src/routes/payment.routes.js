@@ -18,6 +18,8 @@ paymentRouter.delete(
   PaymentController.deletePayment
 );
 
+paymentRouter.put("/edit", Auth.isSuperAdmin, PaymentController.editPayment);
+
 paymentRouter.get("/all", Auth.isSuperAdmin, PaymentController.getPayments);
 
 export default paymentRouter;

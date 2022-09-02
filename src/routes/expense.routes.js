@@ -18,6 +18,8 @@ expenseRouter.delete(
   ExpenseController.deleteExpense
 );
 
+expenseRouter.put("/edit", Auth.isSuperAdmin, ExpenseController.editExpense);
+
 expenseRouter.get("/all", Auth.isSuperAdmin, ExpenseController.getExpenses);
 
 export default expenseRouter;

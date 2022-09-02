@@ -41,8 +41,6 @@ class StudentController {
     next: NextFunction
   ) {
     try {
-      console.log(req.query.className);
-
       const { msg, status, students } =
         await StudentService.getStudentsByClassName(
           req.query.className,

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import PaymentRepo from "../repo/payment.repo";
 import PaymentService from "../services/payment.service";
-import { AddPayment } from "../typings";
+import { AddPayment, EditPayment } from "../typings";
 
 class PaymentController {
   static async addPayment(
@@ -17,6 +17,24 @@ class PaymentController {
         req.user.currentTerm
       );
       if (status !== 201) return res.status(status).json({ msg, status });
+      return res.status(status).json({ msg, status, payment });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "An error occurred", status: 500 });
+    }
+  }
+
+  static async editPayment(
+    req: Request<{}, {}, EditPayment, { _id: string }>,
+    res: Response
+  ) {
+    try {
+      const { _id } = req.query;
+      const { amountPaid } = req.body;
+      const { msg, status, payment } = await PaymentService.editPayment(
+        _id,
+        req.body
+      );
       return res.status(status).json({ msg, status, payment });
     } catch (err) {
       console.log(err);

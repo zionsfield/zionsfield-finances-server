@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import ExpenseRepo from "../repo/expense.repo";
 import ExpenseService from "../services/expense.service";
-import { AddExpense } from "../typings";
+import { AddExpense, EditExpense } from "../typings";
 
 class ExpenseController {
   static async addExpense(
@@ -17,6 +17,24 @@ class ExpenseController {
         req.user.currentTerm
       );
       if (status !== 201) return res.status(status).json({ msg, status });
+      return res.status(status).json({ msg, status, expense });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "An error occurred", status: 500 });
+    }
+  }
+
+  static async editExpense(
+    req: Request<{}, {}, EditExpense, { _id: string }>,
+    res: Response
+  ) {
+    try {
+      const { _id } = req.query;
+      const { details, amountPaid } = req.body;
+      const { msg, status, expense } = await ExpenseService.editExpense(
+        _id,
+        req.body
+      );
       return res.status(status).json({ msg, status, expense });
     } catch (err) {
       console.log(err);

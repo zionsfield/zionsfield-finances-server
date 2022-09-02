@@ -7,7 +7,6 @@ import { CreateAdmin, Term } from "../typings";
 class UserController {
   static async me(req: Request, res: Response, next: NextFunction) {
     try {
-      // console.log(req.user);
       if (!req.user)
         return res.status(404).json({ msg: "Not found", status: 404 });
       return res.status(200).json({ user: req.user });

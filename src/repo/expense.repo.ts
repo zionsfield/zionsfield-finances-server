@@ -1,5 +1,5 @@
 import ExpenseModel from "../models/expense.model";
-import { AddExpense, Pagination, Term } from "../typings";
+import { AddExpense, EditExpense, Pagination, Term } from "../typings";
 
 class ExpenseRepo {
   static async addExpense({
@@ -12,23 +12,21 @@ class ExpenseRepo {
     return await ExpenseModel.create({ ...newExpense, currentTerm });
   }
 
+  static async editExpense(_id: string, editedE: EditExpense) {
+    return await ExpenseModel.findOneAndUpdate({ _id }, { $set: editedE });
+  }
+
   static async deleteExpense(_id: string) {
     return await ExpenseModel.deleteOne({ _id });
   }
 
   static async getTotalExpensesPerTerm(currentTerm: Term) {
     const expenses = await ExpenseModel.find({ currentTerm });
-    console.log(expenses);
-
     const sum = expenses.reduce((total, curr) => total + curr.amountPaid, 0);
-    console.log(sum);
     return sum;
   }
 
   static async getExpenses(pagination: Pagination, currentTerm: Term) {
-    console.log(pagination.page, pagination.limit);
-    console.log(currentTerm);
-
     return await ExpenseModel.find(
       { currentTerm },
       {},

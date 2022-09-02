@@ -2,7 +2,7 @@ import PaymentModel from "../models/payment.model";
 import ClassRepo from "../repo/class.repo";
 import PaymentRepo from "../repo/payment.repo";
 import StudentRepo from "../repo/student.repo";
-import { AddPayment, Pagination, Term } from "../typings";
+import { AddPayment, EditPayment, Pagination, Term } from "../typings";
 
 class PaymentService {
   static async addPayment(newPayment: AddPayment, currentTerm: Term) {
@@ -36,9 +36,46 @@ class PaymentService {
     }
   }
 
+  static async editPayment(_id: string, editedP: EditPayment) {
+    try {
+      const foundPayment = await PaymentRepo.findById(_id);
+      if (!foundPayment) return { msg: "Not found", status: 404 };
+      console.log(foundPayment.amountPaid);
+      await PaymentRepo.editPayment(_id, editedP);
+      const updatedPayment = await PaymentRepo.findById(_id);
+      if (!updatedPayment) return { msg: "Not found", status: 404 };
+      const foundStudent = await StudentRepo.findById(updatedPayment.studentId);
+      if (!foundStudent) return { msg: "Student not found", status: 404 };
+      console.log(updatedPayment.amountPaid);
+
+      foundStudent.amountPaid =
+        foundStudent.amountPaid -
+        parseInt(foundPayment.amountPaid! as any) +
+        parseInt(updatedPayment.amountPaid! as any);
+      await foundStudent.save();
+      return {
+        msg: "Payment edited successfully",
+        status: 200,
+        payment: updatedPayment,
+      };
+    } catch (err) {
+      console.log(err);
+      return { msg: "An error occurred", status: 500 };
+    }
+  }
+
   static async deletePayment(_id: string) {
     try {
-      const deletedPayment = await PaymentRepo.deletePayment(_id);
+      const foundPayment = await PaymentRepo.findById(_id);
+      if (!foundPayment) return { msg: "Payment not found", status: 404 };
+      const deletedPayment = await PaymentRepo.deletePayment(
+        foundPayment._id.toString()
+      );
+      const foundStudent = await StudentRepo.findById(foundPayment.studentId!);
+      if (!foundStudent) return { msg: "Student not found", status: 404 };
+      foundStudent.amountPaid =
+        foundStudent.amountPaid - parseInt(foundPayment.amountPaid! as any);
+      await foundStudent.save();
       return {
         msg: "Payment deleted successfully",
         status: 200,

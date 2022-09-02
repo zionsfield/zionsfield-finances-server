@@ -1,5 +1,11 @@
 import PaymentModel from "../models/payment.model";
-import { AddPayment, AddPaymentDto, Pagination, Term } from "../typings";
+import {
+  AddPayment,
+  AddPaymentDto,
+  EditPayment,
+  Pagination,
+  Term,
+} from "../typings";
 
 class PaymentRepo {
   static async addPayment({
@@ -11,18 +17,25 @@ class PaymentRepo {
   }) {
     return await PaymentModel.create({ ...newPayment, currentTerm });
   }
+  static async editPayment(_id: string, editedP: EditPayment) {
+    return await PaymentModel.updateOne(
+      { _id },
+      {
+        $set: {
+          amountPaid: editedP.amountPaid,
+        },
+      }
+    );
+  }
   static async deletePayment(_id: string) {
-    return await PaymentModel.deleteOne({ _id });
+    return await PaymentModel.findOneAndDelete({ _id });
   }
   static async getTotalPaymentsPerTerm(currentTerm: Term) {
     const payments = await PaymentModel.find({ currentTerm });
-    console.log(payments);
-
     const sum = payments.reduce(
       (total, curr: any) => total + curr.amountPaid,
       0
     );
-    console.log(sum);
     return sum;
   }
   static async getPayments(pagination: Pagination, currentTerm: Term) {
@@ -34,6 +47,10 @@ class PaymentRepo {
       .populate("studentId")
       .sort({ createdAt: 1 })
       .exec();
+  }
+
+  static async findById(_id: string) {
+    return await PaymentModel.findById(_id);
   }
 
   static async getPaymentsByDay(day: number) {
