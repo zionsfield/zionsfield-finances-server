@@ -8,6 +8,11 @@ const classSchema = new Schema(
       required: true,
       unique: true,
     },
+    level: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
   },
   {
     collection: "classes",
